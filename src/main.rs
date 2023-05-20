@@ -1,11 +1,18 @@
+mod wad;
+
 extern crate sdl2;
 
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
 use std::time::Duration;
+use crate::wad::load_wad_file;
 
 pub fn main() -> Result<(), String> {
+    println!("Loading WAD file ...");
+
+    let wad= load_wad_file("resources/doom1.wad").expect("Could not find WAD file!");
+
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
 
@@ -23,6 +30,7 @@ pub fn main() -> Result<(), String> {
     canvas.present();
     let mut event_pump = sdl_context.event_pump()?;
 
+    // game loop
     'running: loop {
         for event in event_pump.poll_iter() {
             match event {
